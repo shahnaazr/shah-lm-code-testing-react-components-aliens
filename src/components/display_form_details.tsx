@@ -1,4 +1,4 @@
-interface DisplayFormDetailsProps {
+export interface DisplayFormDetailsProps {
 speciesName: string;
 planetName: string;
 numberOfBeings: string;
@@ -9,11 +9,15 @@ reasonForSparing: string;
 export const DisplayFormDetails: React.FC<DisplayFormDetailsProps> =({speciesName,planetName, numberOfBeings,result, reasonForSparing })=> {
     return (
         <>
-            <p>SpeciesName : {speciesName}</p>
-            <p>PlanetName : {planetName}</p>
-            <p>Number of beings : {numberOfBeings}</p>
-            <p>Result : {result}</p>
-            <p>Reason for sparing : {reasonForSparing}</p>
+        <section>
+            <h3>Please find below the Form Data you had submitted: </h3>
+            <li>SpeciesName : {speciesName}</li>
+            <li>PlanetName : {planetName}</li>
+            <li>Number of beings : {numberOfBeings}</li>
+            <li>Result : {result}</li>
+            <li>Reason for sparing : {reasonForSparing}</li> 
+        </section>
+        
         </>
     )
 }

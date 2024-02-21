@@ -1,9 +1,9 @@
-interface ReasonforsparingProps{
+export interface ReasonforSparingProps{
     reasonForSparing: string;
     onChangeReasonForSparing: (e: string)=> void;
 }
 
-export const ReasonForSparing: React.FC<ReasonforsparingProps> = ({reasonForSparing, onChangeReasonForSparing}) => {
+export const ReasonForSparing: React.FC<ReasonforSparingProps> = ({reasonForSparing, onChangeReasonForSparing}) => {
     return (
                 <>
                     <label htmlFor="reasonforsparing">Reason for sparing: </label>
