@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { ReasonForSparing, ReasonforSparingProps } from "./reason_for_sparing"
+import { errorMessage01, errorMessage02 } from "./validate/validate_reason_for_sparing"
 
 describe("Reason for sparing Component", () => {
     test("Given the props for the reason for sparing, When the component is rendered, then the reason for sparing label should be present", ()=> {
         //arrange
         const reasonForSparingProps: ReasonforSparingProps = {
             reasonForSparing: "this is fantastic",
-           onChangeReasonForSparing: ()=> {}
+           onChangeReasonForSparing: ()=> {}, 
+           validate: (reasonForSparing)=> []
         }
 
         //act
@@ -23,7 +25,8 @@ describe("Reason for sparing Component", () => {
         //arrange
         const reasonForSparingProps: ReasonforSparingProps = {
             reasonForSparing: "this is fantastic",
-           onChangeReasonForSparing: ()=> {}
+           onChangeReasonForSparing: ()=> {}, 
+           validate: (reasonForSparing)=> []
         }
 
         //act
@@ -40,7 +43,8 @@ describe("Reason for sparing Component", () => {
         const mock = jest.fn();
         const reasonForSparingProps: ReasonforSparingProps = {
             reasonForSparing: "this is fantastic",
-           onChangeReasonForSparing: mock
+           onChangeReasonForSparing: mock, 
+           validate: (reasonForSparing)=> []
         }
 
         //act
@@ -58,7 +62,8 @@ describe("Reason for sparing Component", () => {
         const mock = jest.fn();
         const reasonForSparingProps: ReasonforSparingProps = {
             reasonForSparing: "this is fantastic",
-           onChangeReasonForSparing: mock
+           onChangeReasonForSparing: mock, 
+           validate: (reasonForSparing)=> []
         }
 
         //act
@@ -70,5 +75,62 @@ describe("Reason for sparing Component", () => {
         expect(mock).toBeCalledTimes(1);
         expect(mock).toBeCalledWith("what a beautiful day");
   
+    })
+    
+    test("given the props, when the value is lesser than 17 char for reason for sparing, then the user should see an error message", ()=> {
+
+        //arrange
+        const mock = jest.fn();
+        const mockValidate = jest.fn();
+        mockValidate.mockReturnValue([errorMessage01])
+        const reasonForSparingProps: ReasonforSparingProps = {
+            reasonForSparing: "this is great",
+           onChangeReasonForSparing: mock, 
+           validate: mockValidate
+        }
+
+        //act
+        render(<ReasonForSparing {...reasonForSparingProps}/>);
+        
+        //assert
+        expect(screen.getByText(errorMessage01)).toBeInTheDocument();
+    })
+
+    test("given the props, when the value is greater than 153 char for reason for sparing, then the user should see an error message", ()=> {
+        //arrange
+        const mock = jest.fn();
+        const mockValidate = jest.fn();
+        mockValidate.mockReturnValue([errorMessage02])
+        const reasonForSparingProps: ReasonforSparingProps = {
+            reasonForSparing: "mxsyvjmompgzvqirunmgojmidemkfnafoxfuzwwrlhdquxemrceslwfaqsvbclzaekyemksvmvbencyfxtkntwtggzojjhzgpyeyoux xc",
+           onChangeReasonForSparing: mock, 
+           validate: mockValidate
+        }
+
+        //act
+        render(<ReasonForSparing {...reasonForSparingProps}/>);
+        
+        //assert
+        expect(screen.getByText(errorMessage02)).toBeInTheDocument();
+
+    })
+
+    test("given the props, when the reason for sparing is of right value, then the user should not see an error message", ()=> {
+         //arrange
+         const mock = jest.fn();
+         const mockValidate = jest.fn();
+         mockValidate.mockReturnValue([]);
+         const reasonForSparingProps: ReasonforSparingProps = {
+             reasonForSparing: "mxsyvjmompgzvqirunmgojmidemkfnafoxfuzwwrlhdquxemrceslwfaqsvbclzaekyemksvmvbencyfxtkntwtggzojjhzgpyeyoux xc",
+            onChangeReasonForSparing: mock, 
+            validate: mockValidate
+         }
+ 
+         //act
+         render(<ReasonForSparing {...reasonForSparingProps}/>);
+         
+         //assert
+         expect(screen.queryByText(errorMessage01)).not.toBeInTheDocument();
+         expect(screen.queryByText(errorMessage02)).not.toBeInTheDocument();
     })
 })

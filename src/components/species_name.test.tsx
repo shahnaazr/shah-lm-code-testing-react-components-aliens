@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { SpeciesName, SpeciesNameProps } from "./species_name"
 import userEvent from "@testing-library/user-event"
+import { errorMessage01, errorMessage02, errorMessage03 } from "./validate/validate_species_name"
 
 describe("Species Name Component", () => {
     test("Given the props for the species name, When the component is rendered, then the species name label should be present", ()=> {
         //arrange
         const speciesNameProps: SpeciesNameProps = {
            speciesName: "animal",
-           onChangeSpeciesName: ()=> {}
+           onChangeSpeciesName: ()=> {},
+           validate: (speciesName) => []
         }
 
         //act
@@ -23,7 +25,8 @@ describe("Species Name Component", () => {
         //arrange
         const speciesNameProps: SpeciesNameProps = {
            speciesName: "animal",
-           onChangeSpeciesName: ()=> {}
+           onChangeSpeciesName: ()=> {},
+           validate: (speciesName) => []
         }
 
         //act
@@ -40,7 +43,8 @@ describe("Species Name Component", () => {
         const mock = jest.fn();
         const speciesNameProps: SpeciesNameProps = {
            speciesName: "animal",
-           onChangeSpeciesName: mock
+           onChangeSpeciesName: mock,
+           validate: (speciesName) => []
         }
 
         //act
@@ -58,7 +62,8 @@ describe("Species Name Component", () => {
         const mock = jest.fn();
         const speciesNameProps: SpeciesNameProps = {
            speciesName: "animal",
-           onChangeSpeciesName: mock
+           onChangeSpeciesName: mock,
+           validate: (speciesName) => []
         }
 
         //act
@@ -70,5 +75,94 @@ describe("Species Name Component", () => {
         expect(mock).toBeCalledTimes(1);
         expect(mock).toBeCalledWith("reptile");
   
+    })
+
+    test("given the props, when the value is lesser than 3 char for species name, then the user should see an error message", ()=> {
+
+        //arrange
+        const mock = jest.fn();
+        const mockValidate = jest.fn();
+        mockValidate.mockReturnValue([errorMessage01])
+        const speciesNameProps: SpeciesNameProps = {
+        speciesName: "we",
+        onChangeSpeciesName: mock,
+        validate: mockValidate
+        }
+
+        //act
+        render(<SpeciesName {...speciesNameProps}/>)
+        // const speciesNameInputField = screen.getByLabelText("Species Name:");
+        // fireEvent.change(speciesNameInputField, {target: {value: "we"}})
+        
+        //assert
+        expect(screen.getByText(errorMessage01)).toBeInTheDocument();
+    })
+
+    test("given the props, when the value is greater than 23 char for species name, then the user should see an error message", ()=> {
+        //arrange
+        const mock = jest.fn();
+        const mockvalidate = jest.fn();
+        mockvalidate.mockReturnValue([errorMessage02])
+        const speciesNameProp: SpeciesNameProps = {
+            speciesName :"abcdefghijklmnopqrstuvwzyz",
+            onChangeSpeciesName: mock,
+            validate: mockvalidate
+        }
+
+        //act
+        render(<SpeciesName {...speciesNameProp}/>)
+
+        expect(screen.getByText(errorMessage02)).toBeInTheDocument();
+
+    })
+
+    test("given the props, when the value contains a special char for species name, then the user should see an error message", ()=> {
+        //arrange
+        const mock = jest.fn();
+        const mockvalidate = jest.fn();
+        mockvalidate.mockReturnValue([errorMessage03])
+        const speciesNameProp: SpeciesNameProps = {
+            speciesName :"abcd!fg",
+            onChangeSpeciesName: mock,
+            validate: mockvalidate
+        }
+
+        //act
+        render(<SpeciesName {...speciesNameProp}/>)
+
+        expect(screen.getByText(errorMessage03)).toBeInTheDocument();
+    })
+
+    test("given the props,  when the value contains a number for species name, then the user should see an error message", ()=> {
+        //arrange
+        const mock = jest.fn();
+        const mockvalidate = jest.fn();
+        mockvalidate.mockReturnValue([errorMessage03])
+        const speciesNameProp: SpeciesNameProps = {
+            speciesName :"abc2ef",
+            onChangeSpeciesName: mock,
+            validate: mockvalidate
+        }
+
+        //act
+        render(<SpeciesName {...speciesNameProp}/>)
+
+        expect(screen.getByText(errorMessage03)).toBeInTheDocument();
+            })
+
+    test("given the props, when the species name is of right value, then the user should not see an error message", ()=> {
+        //arrange
+        const mock = jest.fn();
+        const speciesNameProp: SpeciesNameProps = {
+            speciesName :"abcdefgh",
+            onChangeSpeciesName: mock,
+            validate: (speciesName)=>[]
+        }
+
+        //act
+        render(<SpeciesName {...speciesNameProp}/>)
+        expect(screen.queryByText(errorMessage01)).not.toBeInTheDocument();
+        expect(screen.queryByText(errorMessage02)).not.toBeInTheDocument();
+        expect(screen.queryByText(errorMessage03)).not.toBeInTheDocument();
     })
 })

@@ -2,13 +2,15 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { SpeciesName, SpeciesNameProps } from "./species_name"
 import userEvent from "@testing-library/user-event"
 import { NumberOfBeings, NumberOfBeingsProps } from "./number_of_beings"
+import { errorMessage01, errorMessage02 } from "./validate/validate_number_of_beings"
 
 describe("Number of beings Component", () => {
     test("Given the props for the number of beings, When the component is rendered, then the number of beings label should be present", ()=> {
         //arrange
         const numberOfBeingsProps: NumberOfBeingsProps = {
             numberOfBeings: "20",
-           onChangeNumberOfBeings: ()=> {}
+           onChangeNumberOfBeings: ()=> {}, 
+           validate: (numberOfBeings)=> []
         }
 
         //act
@@ -25,7 +27,8 @@ describe("Number of beings Component", () => {
 
          const numberOfBeingsProps: NumberOfBeingsProps = {
              numberOfBeings: "20",
-            onChangeNumberOfBeings: ()=> {}
+            onChangeNumberOfBeings: ()=> {}, 
+            validate: (numberOfBeings)=> []
          }
  
          //act
@@ -43,7 +46,8 @@ describe("Number of beings Component", () => {
         const mock = jest.fn();
         const numberOfBeingsProps: NumberOfBeingsProps = {
             numberOfBeings: "20",
-           onChangeNumberOfBeings: mock
+           onChangeNumberOfBeings: mock, 
+           validate: (numberOfBeings)=> []
         }
 
         //act
@@ -61,7 +65,8 @@ describe("Number of beings Component", () => {
         const mock = jest.fn();
         const numberOfBeingsProps: NumberOfBeingsProps = {
             numberOfBeings: "20",
-           onChangeNumberOfBeings: mock
+           onChangeNumberOfBeings: mock, 
+           validate: (numberOfBeings)=> []
         }
 
         //act
@@ -73,5 +78,80 @@ describe("Number of beings Component", () => {
         expect(mock).toBeCalledTimes(1);
         expect(mock).toBeCalledWith("40");
   
+    }) 
+    
+    //
+    test("given the props, when the value is lesser than 10 char for number of beings, then the user should see an error message", ()=> {
+
+        //arrange
+        const mock = jest.fn();
+        const mockvalidate = jest.fn();
+        mockvalidate.mockReturnValue([errorMessage01])
+        const numberOfBeingsProps: NumberOfBeingsProps = {
+            numberOfBeings: "20",
+           onChangeNumberOfBeings: mock, 
+           validate: mockvalidate
+        }
+
+        //act
+        render(<NumberOfBeings {...numberOfBeingsProps}/>);
+
+        expect(screen.getByText(errorMessage01)).toBeInTheDocument();
+
+    })
+
+    
+
+    test("given the props, when the value contains a special char for number of beings, then the user should see an error message", ()=> {
+       
+        //arrange
+        const mock = jest.fn();
+        const mockvalidate = jest.fn();
+        mockvalidate.mockReturnValue([errorMessage02])
+        const numberOfBeingsProps: NumberOfBeingsProps = {
+            numberOfBeings: "20000000000!@",
+           onChangeNumberOfBeings: mock, 
+           validate: mockvalidate
+        }
+
+        //act
+        render(<NumberOfBeings {...numberOfBeingsProps}/>);
+
+        expect(screen.getByText(errorMessage02)).toBeInTheDocument();
+    })
+
+    test("given the props, when the value contains aphabets for number of beings, then the user should not see an error message", ()=> {
+         //arrange
+         const mock = jest.fn();
+         const mockvalidate = jest.fn();
+         mockvalidate.mockReturnValue([errorMessage02])
+         const numberOfBeingsProps: NumberOfBeingsProps = {
+             numberOfBeings: "20asd000000000",
+            onChangeNumberOfBeings: mock, 
+            validate: mockvalidate
+         }
+ 
+         //act
+         render(<NumberOfBeings {...numberOfBeingsProps}/>);
+ 
+         expect(screen.getByText(errorMessage02)).toBeInTheDocument();
+     })
+
+    test("given the props, when the number of beings is of right value, then the user should not see an error message", ()=> {
+       //arrange
+       const mock = jest.fn();
+       const mockvalidate = jest.fn();
+       mockvalidate.mockReturnValue([])
+       const numberOfBeingsProps: NumberOfBeingsProps = {
+           numberOfBeings: "20asd000000000",
+          onChangeNumberOfBeings: mock, 
+          validate: mockvalidate
+       }
+
+       //act
+       render(<NumberOfBeings {...numberOfBeingsProps}/>);
+
+        expect(screen.queryByText(errorMessage01)).not.toBeInTheDocument();
+        expect(screen.queryByText(errorMessage02)).not.toBeInTheDocument();
     })
 })

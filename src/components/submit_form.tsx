@@ -1,4 +1,4 @@
-interface SubmitFormProps{
+export interface SubmitFormProps{
     onClickSumbitForm: () => void;
 }
 export const SubmitForm: React.FC<SubmitFormProps> = ({onClickSumbitForm}) => {

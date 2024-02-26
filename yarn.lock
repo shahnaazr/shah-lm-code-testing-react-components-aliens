@@ -1962,6 +1962,13 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+"@types/jest-when@^3.5.5":
+  version "3.5.5"
+  resolved "https://registry.npmjs.org/@types/jest-when/-/jest-when-3.5.5.tgz"
+  integrity sha512-H9MDPIrz7NOu6IXP9OHExNN9LnJbGYAzRsGIDKxWr7Fth9vovemNV8yFbkUWLSEmuA8PREvAEvt9yK0PPLmFHA==
+  dependencies:
+    "@types/jest" "*"
+
 "@types/jest@*", "@types/jest@^29.2.5":
   version "29.4.0"
   resolved "https://registry.npmjs.org/@types/jest/-/jest-29.4.0.tgz"
@@ -5903,6 +5910,11 @@ jest-watcher@^28.0.0:
     jest-util "^28.1.3"
     string-length "^4.0.1"
 
+jest-when@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npmjs.org/jest-when/-/jest-when-3.6.0.tgz"
+  integrity sha512-+cZWTy0ekAJo7M9Om0Scdor1jm3wDiYJWmXE8U22UVnkH54YCXAuaqz3P+up/FdtOg8g4wHOxV7Thd7nKhT6Dg==
+
 jest-worker@^26.2.1:
   version "26.6.2"
   resolved "https://registry.npmjs.org/jest-worker/-/jest-worker-26.6.2.tgz"
@@ -5930,7 +5942,7 @@ jest-worker@^28.0.2:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-"jest@^27.0.0 || ^28.0.0", jest@^27.4.3:
+"jest@^27.0.0 || ^28.0.0", jest@^27.4.3, "jest@>= 25":
   version "27.5.1"
   resolved "https://registry.npmjs.org/jest/-/jest-27.5.1.tgz"
   integrity sha512-Yn0mADZB89zTtjkPJEXwrac3LHudkQMR+Paqa8uxJHCBr9agxztUifWCyiYrjhMPBoUVBjyny0I7XH6ozDr7QQ==
