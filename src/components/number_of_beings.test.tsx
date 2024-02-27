@@ -143,7 +143,7 @@ describe("Number of beings Component", () => {
        const mockvalidate = jest.fn();
        mockvalidate.mockReturnValue([])
        const numberOfBeingsProps: NumberOfBeingsProps = {
-           numberOfBeings: "20asd000000000",
+           numberOfBeings: "2000000000",
           onChangeNumberOfBeings: mock, 
           validate: mockvalidate
        }

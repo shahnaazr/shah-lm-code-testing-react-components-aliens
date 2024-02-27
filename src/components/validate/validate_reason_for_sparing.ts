@@ -6,7 +6,7 @@ export const validateReasonForSparing = (reasonForsparing: string)=> {
     let count = reasonForsparing.length;
     const lowerLimit =17;
     const upperLimit = 153;
-    if (count< lowerLimit){
+    if (count < lowerLimit){
         messages.push(errorMessage01);
     }
 
